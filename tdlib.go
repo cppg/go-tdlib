@@ -12,6 +12,7 @@ package tdlib
 import "C"
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -178,7 +179,8 @@ func (client *Client) Send(jsonQuery interface{}) {
 		query = C.CString(jsonQuery.(string))
 	case UpdateData:
 		jsonBytes, _ := json.Marshal(jsonQuery.(UpdateData))
-		query = C.CString(string(jsonBytes))
+		s := bytes.NewBuffer(jsonBytes).String()
+		query = C.CString(s)
 	}
 
 	defer C.free(unsafe.Pointer(query))
