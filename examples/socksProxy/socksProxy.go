@@ -6,6 +6,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/cppg/go-tdlib"
 )
 
 func main() {
@@ -59,7 +61,7 @@ func main() {
 		chatID := int64(198529620) // Foursquare bot chat id
 
 		inputMsgTxt := tdlib.NewInputMessageText(tdlib.NewFormattedText("/start", nil), true, true)
-		client.SendMessage(chatID, 0, false, true, nil, inputMsgTxt)
+		client.SendMessage(chatID, 0, 0, nil, nil, inputMsgTxt)
 
 		time.Sleep(5 * time.Second)
 	}()

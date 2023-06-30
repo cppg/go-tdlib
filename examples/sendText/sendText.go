@@ -6,6 +6,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/cppg/go-tdlib"
 )
 
 func main() {

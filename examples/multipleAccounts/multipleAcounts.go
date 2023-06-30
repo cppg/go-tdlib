@@ -10,6 +10,8 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"github.com/cppg/go-tdlib"
 )
 
 var allChats []*tdlib.Chat

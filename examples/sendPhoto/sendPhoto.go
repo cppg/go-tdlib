@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/cppg/go-tdlib"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/cppg/go-tdlib"
 )
 
 func main() {

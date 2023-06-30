@@ -6,6 +6,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/cppg/go-tdlib"
 )
 
 func main() {
@@ -50,7 +52,7 @@ func main() {
 		eventFilter := func(msg *tdlib.TdMessage) bool {
 			updateMsg := (*msg).(*tdlib.UpdateNewMessage)
 			// For example, we want incomming messages from user with below id:
-			if updateMsg.Message.SenderUserID == 41507975 {
+			if updateMsg.Message.ViaBotUserID == 41507975 {
 				return true
 			}
 			return false
