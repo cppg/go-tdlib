@@ -1,12 +1,11 @@
 package main
 
 import (
+	"github.com/cppg/go-tdlib"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-
-	"github.com/Arman92/go-tdlib"
 )
 
 func main() {
@@ -52,6 +51,6 @@ func main() {
 
 	inputMsg := tdlib.NewInputMessagePhoto(tdlib.NewInputFileLocal("./bunny.jpg"), nil, nil, 400, 400,
 		tdlib.NewFormattedText("A photo sent from go-tdlib!", nil), 0)
-	client.SendMessage(chatID, 0, false, false, nil, inputMsg)
+	client.SendMessage(chatID, 0, 0, nil, nil, inputMsg)
 
 }

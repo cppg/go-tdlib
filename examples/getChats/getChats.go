@@ -7,8 +7,6 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
-	"github.com/Arman92/go-tdlib"
 )
 
 var allChats []*tdlib.Chat
