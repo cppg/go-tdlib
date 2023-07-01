@@ -759,7 +759,7 @@ func (client *Client) GetBasicGroup(basicGroupID int32) (*BasicGroup, error) {
 
 // GetBasicGroupFullInfo Returns full information about a basic group by its identifier
 // @param basicGroupID Basic group identifier
-func (client *Client) GetBasicGroupFullInfo(basicGroupID int32) (*BasicGroupFullInfo, error) {
+func (client *Client) GetBasicGroupFullInfo(basicGroupID int64) (*BasicGroupFullInfo, error) {
 	result, err := client.SendAndCatch(UpdateData{
 		"@type":          "getBasicGroupFullInfo",
 		"basic_group_id": basicGroupID,
