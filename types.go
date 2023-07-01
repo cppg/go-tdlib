@@ -4812,11 +4812,11 @@ func (chatMemberStatusBanned *ChatMemberStatusBanned) GetChatMemberStatusEnum() 
 // ChatMember A user with information about joining/leaving a chat
 type ChatMember struct {
 	tdCommon
+	InviterUserID  int64            `json:"inviter_user_id"`  // Identifier of a user that invited/promoted/banned this member in the chat; 0 if unknown
+	JoinedChatDate int64            `json:"joined_chat_date"` // Point in time (Unix timestamp) when the user joined the chat
 	MemberId       MemberId         `json:"member_id"`
-	InviterUserID  int32            `json:"inviter_user_id"`  // Identifier of a user that invited/promoted/banned this member in the chat; 0 if unknown
-	JoinedChatDate int32            `json:"joined_chat_date"` // Point in time (Unix timestamp) when the user joined the chat
-	Status         ChatMemberStatus `json:"status"`           // Status of the member in the chat
-	BotInfo        *BotInfo         `json:"bot_info"`         // If the user is a bot, information about the bot; may be null. Can be null even for a bot if the bot is not the chat member
+	Status         ChatMemberStatus `json:"status"`   // Status of the member in the chat
+	BotInfo        *BotInfo         `json:"bot_info"` // If the user is a bot, information about the bot; may be null. Can be null even for a bot if the bot is not the chat member
 }
 
 type MemberId struct {
@@ -4836,10 +4836,10 @@ func (chatMember *ChatMember) MessageType() string {
 // @param joinedChatDate Point in time (Unix timestamp) when the user joined the chat
 // @param status Status of the member in the chat
 // @param botInfo If the user is a bot, information about the bot; may be null. Can be null even for a bot if the bot is not the chat member
-func NewChatMember(userID int32, inviterUserID int32, joinedChatDate int32, status ChatMemberStatus, botInfo *BotInfo) *ChatMember {
+func NewChatMember(userID int64, inviterUserID int64, joinedChatDate int64, status ChatMemberStatus, botInfo *BotInfo) *ChatMember {
 	chatMemberTemp := ChatMember{
 		tdCommon:       tdCommon{Type: "chatMember"},
-		UserID:         userID,
+		MemberId:       MemberId{UserId: userID},
 		InviterUserID:  inviterUserID,
 		JoinedChatDate: joinedChatDate,
 		Status:         status,
@@ -4858,9 +4858,9 @@ func (chatMember *ChatMember) UnmarshalJSON(b []byte) error {
 	}
 	tempObj := struct {
 		tdCommon
-		UserID         int32    `json:"user_id"`          // User identifier of the chat member
-		InviterUserID  int32    `json:"inviter_user_id"`  // Identifier of a user that invited/promoted/banned this member in the chat; 0 if unknown
-		JoinedChatDate int32    `json:"joined_chat_date"` // Point in time (Unix timestamp) when the user joined the chat
+		UserID         int64    `json:"user_id"`          // User identifier of the chat member
+		InviterUserID  int64    `json:"inviter_user_id"`  // Identifier of a user that invited/promoted/banned this member in the chat; 0 if unknown
+		JoinedChatDate int64    `json:"joined_chat_date"` // Point in time (Unix timestamp) when the user joined the chat
 		BotInfo        *BotInfo `json:"bot_info"`         // If the user is a bot, information about the bot; may be null. Can be null even for a bot if the bot is not the chat member
 	}{}
 	err = json.Unmarshal(b, &tempObj)
@@ -4869,7 +4869,7 @@ func (chatMember *ChatMember) UnmarshalJSON(b []byte) error {
 	}
 
 	chatMember.tdCommon = tempObj.tdCommon
-	chatMember.UserID = tempObj.UserID
+	chatMember.MemberId = MemberId{UserId: tempObj.UserID}
 	chatMember.InviterUserID = tempObj.InviterUserID
 	chatMember.JoinedChatDate = tempObj.JoinedChatDate
 	chatMember.BotInfo = tempObj.BotInfo
