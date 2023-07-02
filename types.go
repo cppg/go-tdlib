@@ -3602,7 +3602,7 @@ type Contact struct {
 	FirstName   string `json:"first_name"`   // First name of the user; 1-255 characters in length
 	LastName    string `json:"last_name"`    // Last name of the user
 	Vcard       string `json:"vcard"`        // Additional data about the user in a form of vCard; 0-2048 bytes in length
-	UserID      int32  `json:"user_id"`      // Identifier of the user, if known; otherwise 0
+	UserID      int64  `json:"user_id"`      // Identifier of the user, if known; otherwise 0
 }
 
 // MessageType return the string telegram-type of Contact
@@ -3617,7 +3617,7 @@ func (contact *Contact) MessageType() string {
 // @param lastName Last name of the user
 // @param vcard Additional data about the user in a form of vCard; 0-2048 bytes in length
 // @param userID Identifier of the user, if known; otherwise 0
-func NewContact(phoneNumber string, firstName string, lastName string, vcard string, userID int32) *Contact {
+func NewContact(phoneNumber string, firstName string, lastName string, vcard string, userID int64) *Contact {
 	contactTemp := Contact{
 		tdCommon:    tdCommon{Type: "contact"},
 		PhoneNumber: phoneNumber,
@@ -4308,7 +4308,7 @@ func (inputChatPhotoAnimation *InputChatPhotoAnimation) GetInputChatPhotoEnum() 
 // User Represents a user
 type User struct {
 	tdCommon
-	ID                int32         `json:"id"`                 // User identifier
+	ID                int64         `json:"id"`                 // User identifier
 	FirstName         string        `json:"first_name"`         // First name of the user
 	LastName          string        `json:"last_name"`          // Last name of the user
 	Username          string        `json:"username"`           // Username of the user
@@ -4385,7 +4385,7 @@ func (user *User) UnmarshalJSON(b []byte) error {
 	}
 	tempObj := struct {
 		tdCommon
-		ID                int32         `json:"id"`                 // User identifier
+		ID                int64         `json:"id"`                 // User identifier
 		FirstName         string        `json:"first_name"`         // First name of the user
 		LastName          string        `json:"last_name"`          // Last name of the user
 		Username          string        `json:"username"`           // Username of the user
@@ -4511,7 +4511,7 @@ func NewUsers(totalCount int32, userIDs []int32) *Users {
 // ChatAdministrator Contains information about a chat administrator
 type ChatAdministrator struct {
 	tdCommon
-	UserID      int32  `json:"user_id"`      // User identifier of the administrator
+	UserID      int64  `json:"user_id"`      // User identifier of the administrator
 	CustomTitle string `json:"custom_title"` // Custom title of the administrator
 	IsOwner     bool   `json:"is_owner"`     // True, if the user is the owner of the chat
 }
@@ -4526,7 +4526,7 @@ func (chatAdministrator *ChatAdministrator) MessageType() string {
 // @param userID User identifier of the administrator
 // @param customTitle Custom title of the administrator
 // @param isOwner True, if the user is the owner of the chat
-func NewChatAdministrator(userID int32, customTitle string, isOwner bool) *ChatAdministrator {
+func NewChatAdministrator(userID int64, customTitle string, isOwner bool) *ChatAdministrator {
 	chatAdministratorTemp := ChatAdministrator{
 		tdCommon:    tdCommon{Type: "chatAdministrator"},
 		UserID:      userID,
@@ -5297,7 +5297,7 @@ func (supergroupMembersFilterBots *SupergroupMembersFilterBots) GetSupergroupMem
 type ChatInviteLink struct {
 	tdCommon
 	InviteLink          string `json:"invite_link"`           // Chat invite link
-	AdministratorUserID int32  `json:"administrator_user_id"` // User identifier of an administrator created the link
+	AdministratorUserID int64  `json:"administrator_user_id"` // User identifier of an administrator created the link
 	Date                int32  `json:"date"`                  // Point in time (Unix timestamp) when the link was created
 	EditDate            int32  `json:"edit_date"`             // Point in time (Unix timestamp) when the link was last edited; 0 if never or unknown
 	ExpireDate          int32  `json:"expire_date"`           // Point in time (Unix timestamp) when the link will expire; 0 if never
@@ -5325,7 +5325,7 @@ func (chatInviteLink *ChatInviteLink) MessageType() string {
 // @param isPermanent True, if the link is permanent. Permanent invite link can't have expire date or usage limit. There is exactly one permanent invite link for each administrator with can_invite_users right at a given time
 // @param isExpired True, if the link is already expired
 // @param isRevoked True, if the link was revoked
-func NewChatInviteLink(inviteLink string, administratorUserID int32, date int32, editDate int32, expireDate int32, memberLimit int32, memberCount int32, isPermanent bool, isExpired bool, isRevoked bool) *ChatInviteLink {
+func NewChatInviteLink(inviteLink string, administratorUserID int64, date int32, editDate int32, expireDate int32, memberLimit int32, memberCount int32, isPermanent bool, isExpired bool, isRevoked bool) *ChatInviteLink {
 	chatInviteLinkTemp := ChatInviteLink{
 		tdCommon:            tdCommon{Type: "chatInviteLink"},
 		InviteLink:          inviteLink,
@@ -5372,7 +5372,7 @@ func NewChatInviteLinks(totalCount int32, inviteLinks []ChatInviteLink) *ChatInv
 // ChatInviteLinkMember Describes a chat member joined a chat by an invite link
 type ChatInviteLinkMember struct {
 	tdCommon
-	UserID         int32 `json:"user_id"`          // User identifier
+	UserID         int64 `json:"user_id"`          // User identifier
 	JoinedChatDate int32 `json:"joined_chat_date"` // Point in time (Unix timestamp) when the user joined the chat
 }
 
@@ -5385,7 +5385,7 @@ func (chatInviteLinkMember *ChatInviteLinkMember) MessageType() string {
 //
 // @param userID User identifier
 // @param joinedChatDate Point in time (Unix timestamp) when the user joined the chat
-func NewChatInviteLinkMember(userID int32, joinedChatDate int32) *ChatInviteLinkMember {
+func NewChatInviteLinkMember(userID int64, joinedChatDate int32) *ChatInviteLinkMember {
 	chatInviteLinkMemberTemp := ChatInviteLinkMember{
 		tdCommon:       tdCommon{Type: "chatInviteLinkMember"},
 		UserID:         userID,
@@ -5449,7 +5449,7 @@ func (chatInviteLinkInfo *ChatInviteLinkInfo) MessageType() string {
 // @param memberCount Number of members in the chat
 // @param memberUserIDs User identifiers of some chat members that may be known to the current user
 // @param isPublic True, if the chat is a public supergroup or channel, i.e. it has a username or it is a location-based supergroup
-func NewChatInviteLinkInfo(chatID int64, accessibleFor int32, typeParam ChatType, title string, photo *ChatPhotoInfo, memberCount int32, memberUserIDs []int32, isPublic bool) *ChatInviteLinkInfo {
+func NewChatInviteLinkInfo(chatID int64, accessibleFor int32, typeParam ChatType, title string, photo *ChatPhotoInfo, memberCount int32, memberUserIDs []int64, isPublic bool) *ChatInviteLinkInfo {
 	chatInviteLinkInfoTemp := ChatInviteLinkInfo{
 		tdCommon:      tdCommon{Type: "chatInviteLinkInfo"},
 		ChatID:        chatID,
@@ -5505,11 +5505,11 @@ func (chatInviteLinkInfo *ChatInviteLinkInfo) UnmarshalJSON(b []byte) error {
 // BasicGroup Represents a basic group of 0-200 users (must be upgraded to a supergroup to accommodate more than 200 users)
 type BasicGroup struct {
 	tdCommon
-	ID                     int32            `json:"id"`                        // Group identifier
+	ID                     int64            `json:"id"`                        // Group identifier
 	MemberCount            int32            `json:"member_count"`              // Number of members in the group
 	Status                 ChatMemberStatus `json:"status"`                    // Status of the current user in the group
 	IsActive               bool             `json:"is_active"`                 // True, if the group is active
-	UpgradedToSupergroupID int32            `json:"upgraded_to_supergroup_id"` // Identifier of the supergroup to which this group was upgraded; 0 if none
+	UpgradedToSupergroupID int64            `json:"upgraded_to_supergroup_id"` // Identifier of the supergroup to which this group was upgraded; 0 if none
 }
 
 // MessageType return the string telegram-type of BasicGroup
@@ -5524,7 +5524,7 @@ func (basicGroup *BasicGroup) MessageType() string {
 // @param status Status of the current user in the group
 // @param isActive True, if the group is active
 // @param upgradedToSupergroupID Identifier of the supergroup to which this group was upgraded; 0 if none
-func NewBasicGroup(iD int32, memberCount int32, status ChatMemberStatus, isActive bool, upgradedToSupergroupID int32) *BasicGroup {
+func NewBasicGroup(iD int32, memberCount int32, status ChatMemberStatus, isActive bool, upgradedToSupergroupID int64) *BasicGroup {
 	basicGroupTemp := BasicGroup{
 		tdCommon:               tdCommon{Type: "basicGroup"},
 		ID:                     iD,
@@ -5546,10 +5546,10 @@ func (basicGroup *BasicGroup) UnmarshalJSON(b []byte) error {
 	}
 	tempObj := struct {
 		tdCommon
-		ID                     int32 `json:"id"`                        // Group identifier
+		ID                     int64 `json:"id"`                        // Group identifier
 		MemberCount            int32 `json:"member_count"`              // Number of members in the group
 		IsActive               bool  `json:"is_active"`                 // True, if the group is active
-		UpgradedToSupergroupID int32 `json:"upgraded_to_supergroup_id"` // Identifier of the supergroup to which this group was upgraded; 0 if none
+		UpgradedToSupergroupID int64 `json:"upgraded_to_supergroup_id"` // Identifier of the supergroup to which this group was upgraded; 0 if none
 	}{}
 	err = json.Unmarshal(b, &tempObj)
 	if err != nil {
@@ -5573,7 +5573,7 @@ type BasicGroupFullInfo struct {
 	tdCommon
 	Photo         *ChatPhoto      `json:"photo"`           // Chat photo; may be null
 	Description   string          `json:"description"`     //
-	CreatorUserID int32           `json:"creator_user_id"` // User identifier of the creator of the group; 0 if unknown
+	CreatorUserID int64           `json:"creator_user_id"` // User identifier of the creator of the group; 0 if unknown
 	Members       []ChatMember    `json:"members"`         // Group members
 	InviteLink    *ChatInviteLink `json:"invite_link"`     // Permanent invite link for this group; may be null. For chat administrators with can_invite_users right only. Updated only after the basic group is opened
 }
@@ -5590,7 +5590,7 @@ func (basicGroupFullInfo *BasicGroupFullInfo) MessageType() string {
 // @param creatorUserID User identifier of the creator of the group; 0 if unknown
 // @param members Group members
 // @param inviteLink Permanent invite link for this group; may be null. For chat administrators with can_invite_users right only. Updated only after the basic group is opened
-func NewBasicGroupFullInfo(photo *ChatPhoto, description string, creatorUserID int32, members []ChatMember, inviteLink *ChatInviteLink) *BasicGroupFullInfo {
+func NewBasicGroupFullInfo(photo *ChatPhoto, description string, creatorUserID int64, members []ChatMember, inviteLink *ChatInviteLink) *BasicGroupFullInfo {
 	basicGroupFullInfoTemp := BasicGroupFullInfo{
 		tdCommon:      tdCommon{Type: "basicGroupFullInfo"},
 		Photo:         photo,
@@ -5606,7 +5606,7 @@ func NewBasicGroupFullInfo(photo *ChatPhoto, description string, creatorUserID i
 // Supergroup Represents a supergroup or channel with zero or more members (subscribers in the case of channels). From the point of view of the system, a channel is a special kind of a supergroup: only administrators can post and see the list of members, and posts from all administrators use the name and photo of the channel instead of individual names and profile photos. Unlike supergroups, channels can have an unlimited number of subscribers
 type Supergroup struct {
 	tdCommon
-	ID                int32            `json:"id"`                   // Supergroup or channel identifier
+	ID                int64            `json:"id"`                   // Supergroup or channel identifier
 	Username          string           `json:"username"`             // Username of the supergroup or channel; empty for private supergroups or channels
 	Date              int32            `json:"date"`                 // Point in time (Unix timestamp) when the current user joined, or the point in time when the supergroup or channel was created, in case the user is not a member
 	Status            ChatMemberStatus `json:"status"`               // Status of the current user in the supergroup or channel; custom title will be always empty
@@ -5643,7 +5643,7 @@ func (supergroup *Supergroup) MessageType() string {
 // @param restrictionReason If non-empty, contains a human-readable description of the reason why access to this supergroup or channel must be restricted
 // @param isScam True, if many users reported this supergroup or channel as a scam
 // @param isFake True, if many users reported this supergroup or channel as a fake account
-func NewSupergroup(iD int32, username string, date int32, status ChatMemberStatus, memberCount int32, hasLinkedChat bool, hasLocation bool, signMessages bool, isSlowModeEnabled bool, isChannel bool, isVerified bool, restrictionReason string, isScam bool, isFake bool) *Supergroup {
+func NewSupergroup(iD int64, username string, date int32, status ChatMemberStatus, memberCount int32, hasLinkedChat bool, hasLocation bool, signMessages bool, isSlowModeEnabled bool, isChannel bool, isVerified bool, restrictionReason string, isScam bool, isFake bool) *Supergroup {
 	supergroupTemp := Supergroup{
 		tdCommon:          tdCommon{Type: "supergroup"},
 		ID:                iD,
@@ -5674,7 +5674,7 @@ func (supergroup *Supergroup) UnmarshalJSON(b []byte) error {
 	}
 	tempObj := struct {
 		tdCommon
-		ID                int32  `json:"id"`                   // Supergroup or channel identifier
+		ID                int64  `json:"id"`                   // Supergroup or channel identifier
 		Username          string `json:"username"`             // Username of the supergroup or channel; empty for private supergroups or channels
 		Date              int32  `json:"date"`                 // Point in time (Unix timestamp) when the current user joined, or the point in time when the supergroup or channel was created, in case the user is not a member
 		MemberCount       int32  `json:"member_count"`         // Number of members in the supergroup or channel; 0 if unknown. Currently it is guaranteed to be known only if the supergroup or channel was received through searchPublicChats, searchChatsNearby, getInactiveSupergroupChats, getSuitableDiscussionChats, getGroupsInCommon, or getUserPrivacySettingRules
@@ -5735,7 +5735,7 @@ type SupergroupFullInfo struct {
 	StickerSetID             JSONInt64       `json:"sticker_set_id"`               // Identifier of the supergroup sticker set; 0 if none
 	Location                 *ChatLocation   `json:"location"`                     // Location to which the supergroup is connected; may be null
 	InviteLink               *ChatInviteLink `json:"invite_link"`                  // Permanent invite link for this chat; may be null. For chat administrators with can_invite_users right only
-	UpgradedFromBasicGroupID int32           `json:"upgraded_from_basic_group_id"` // Identifier of the basic group from which supergroup was upgraded; 0 if none
+	UpgradedFromBasicGroupID int64           `json:"upgraded_from_basic_group_id"` // Identifier of the basic group from which supergroup was upgraded; 0 if none
 	UpgradedFromMaxMessageID int64           `json:"upgraded_from_max_message_id"` // Identifier of the last message in the basic group from which supergroup was upgraded; 0 if none
 }
 
@@ -5766,7 +5766,7 @@ func (supergroupFullInfo *SupergroupFullInfo) MessageType() string {
 // @param inviteLink Permanent invite link for this chat; may be null. For chat administrators with can_invite_users right only
 // @param upgradedFromBasicGroupID Identifier of the basic group from which supergroup was upgraded; 0 if none
 // @param upgradedFromMaxMessageID Identifier of the last message in the basic group from which supergroup was upgraded; 0 if none
-func NewSupergroupFullInfo(photo *ChatPhoto, description string, memberCount int32, administratorCount int32, restrictedCount int32, bannedCount int32, linkedChatID int64, slowModeDelay int32, slowModeDelayExpiresIn float64, canGetMembers bool, canSetUsername bool, canSetStickerSet bool, canSetLocation bool, canGetStatistics bool, isAllHistoryAvailable bool, stickerSetID JSONInt64, location *ChatLocation, inviteLink *ChatInviteLink, upgradedFromBasicGroupID int32, upgradedFromMaxMessageID int64) *SupergroupFullInfo {
+func NewSupergroupFullInfo(photo *ChatPhoto, description string, memberCount int32, administratorCount int32, restrictedCount int32, bannedCount int32, linkedChatID int64, slowModeDelay int32, slowModeDelayExpiresIn float64, canGetMembers bool, canSetUsername bool, canSetStickerSet bool, canSetLocation bool, canGetStatistics bool, isAllHistoryAvailable bool, stickerSetID JSONInt64, location *ChatLocation, inviteLink *ChatInviteLink, upgradedFromBasicGroupID int64, upgradedFromMaxMessageID int64) *SupergroupFullInfo {
 	supergroupFullInfoTemp := SupergroupFullInfo{
 		tdCommon:                 tdCommon{Type: "supergroupFullInfo"},
 		Photo:                    photo,
@@ -5869,8 +5869,8 @@ func (secretChatStateClosed *SecretChatStateClosed) GetSecretChatStateEnum() Sec
 // SecretChat Represents a secret chat
 type SecretChat struct {
 	tdCommon
-	ID         int32           `json:"id"`          // Secret chat identifier
-	UserID     int32           `json:"user_id"`     // Identifier of the chat partner
+	ID         int64           `json:"id"`          // Secret chat identifier
+	UserID     int64           `json:"user_id"`     // Identifier of the chat partner
 	State      SecretChatState `json:"state"`       // State of the secret chat
 	IsOutbound bool            `json:"is_outbound"` // True, if the chat was created by the current user; otherwise false
 	TTL        int32           `json:"ttl"`         // Current message Time To Live setting (self-destruct timer) for the chat, in seconds
@@ -5892,7 +5892,7 @@ func (secretChat *SecretChat) MessageType() string {
 // @param tTL Current message Time To Live setting (self-destruct timer) for the chat, in seconds
 // @param keyHash Hash of the currently used key for comparison with the hash of the chat partner's key. This is a string of 36 little-endian bytes, which must be split into groups of 2 bits, each denoting a pixel of one of 4 colors FFFFFF, D5E6F3, 2D5775, and 2F99C9.
 // @param layer Secret chat layer; determines features supported by the chat partner's application. Video notes are supported if the layer >= 66; nested text entities and underline and strikethrough entities are supported if the layer >= 101
-func NewSecretChat(iD int32, userID int32, state SecretChatState, isOutbound bool, tTL int32, keyHash []byte, layer int32) *SecretChat {
+func NewSecretChat(iD int64, userID int64, state SecretChatState, isOutbound bool, tTL int32, keyHash []byte, layer int32) *SecretChat {
 	secretChatTemp := SecretChat{
 		tdCommon:   tdCommon{Type: "secretChat"},
 		ID:         iD,
@@ -5916,8 +5916,8 @@ func (secretChat *SecretChat) UnmarshalJSON(b []byte) error {
 	}
 	tempObj := struct {
 		tdCommon
-		ID         int32  `json:"id"`          // Secret chat identifier
-		UserID     int32  `json:"user_id"`     // Identifier of the chat partner
+		ID         int64  `json:"id"`          // Secret chat identifier
+		UserID     int64  `json:"user_id"`     // Identifier of the chat partner
 		IsOutbound bool   `json:"is_outbound"` // True, if the chat was created by the current user; otherwise false
 		TTL        int32  `json:"ttl"`         // Current message Time To Live setting (self-destruct timer) for the chat, in seconds
 		KeyHash    []byte `json:"key_hash"`    // Hash of the currently used key for comparison with the hash of the chat partner's key. This is a string of 36 little-endian bytes, which must be split into groups of 2 bits, each denoting a pixel of one of 4 colors FFFFFF, D5E6F3, 2D5775, and 2F99C9.
@@ -5945,7 +5945,7 @@ func (secretChat *SecretChat) UnmarshalJSON(b []byte) error {
 // MessageSenderUser The message was sent by a known user
 type MessageSenderUser struct {
 	tdCommon
-	UserID int32 `json:"user_id"` // Identifier of the user that sent the message
+	UserID int64 `json:"user_id"` // Identifier of the user that sent the message
 }
 
 // MessageType return the string telegram-type of MessageSenderUser
@@ -5956,7 +5956,7 @@ func (messageSenderUser *MessageSenderUser) MessageType() string {
 // NewMessageSenderUser creates a new MessageSenderUser
 //
 // @param userID Identifier of the user that sent the message
-func NewMessageSenderUser(userID int32) *MessageSenderUser {
+func NewMessageSenderUser(userID int64) *MessageSenderUser {
 	messageSenderUserTemp := MessageSenderUser{
 		tdCommon: tdCommon{Type: "messageSenderUser"},
 		UserID:   userID,
@@ -6027,7 +6027,7 @@ func NewMessageSenders(totalCount int32, senders []MessageSender) *MessageSender
 // MessageForwardOriginUser The message was originally sent by a known user
 type MessageForwardOriginUser struct {
 	tdCommon
-	SenderUserID int32 `json:"sender_user_id"` // Identifier of the user that originally sent the message
+	SenderUserID int64 `json:"sender_user_id"` // Identifier of the user that originally sent the message
 }
 
 // MessageType return the string telegram-type of MessageForwardOriginUser
@@ -6038,7 +6038,7 @@ func (messageForwardOriginUser *MessageForwardOriginUser) MessageType() string {
 // NewMessageForwardOriginUser creates a new MessageForwardOriginUser
 //
 // @param senderUserID Identifier of the user that originally sent the message
-func NewMessageForwardOriginUser(senderUserID int32) *MessageForwardOriginUser {
+func NewMessageForwardOriginUser(senderUserID int64) *MessageForwardOriginUser {
 	messageForwardOriginUserTemp := MessageForwardOriginUser{
 		tdCommon:     tdCommon{Type: "messageForwardOriginUser"},
 		SenderUserID: senderUserID,
@@ -6417,7 +6417,7 @@ type Message struct {
 	MessageThreadID         int64                   `json:"message_thread_id"`            // If non-zero, the identifier of the message thread the message belongs to; unique within the chat to which the message belongs
 	TTL                     int32                   `json:"ttl"`                          // For self-destructing messages, the message's TTL (Time To Live), in seconds; 0 if none. TDLib will send updateDeleteMessages or updateMessageContent once the TTL expires
 	TTLExpiresIn            float64                 `json:"ttl_expires_in"`               // Time left before the message expires, in seconds
-	ViaBotUserID            int32                   `json:"via_bot_user_id"`              // If non-zero, the user identifier of the bot through which this message was sent
+	ViaBotUserID            int64                   `json:"via_bot_user_id"`              // If non-zero, the user identifier of the bot through which this message was sent
 	AuthorSignature         string                  `json:"author_signature"`             // For channel posts and anonymous group messages, optional author signature
 	MediaAlbumID            JSONInt64               `json:"media_album_id"`               // Unique identifier of an album this message belongs to. Only audios, documents, photos and videos can be grouped together in albums
 	RestrictionReason       string                  `json:"restriction_reason"`           // If non-empty, contains a human-readable description of the reason why access to this message must be restricted
@@ -6462,7 +6462,7 @@ func (message *Message) MessageType() string {
 // @param restrictionReason If non-empty, contains a human-readable description of the reason why access to this message must be restricted
 // @param content Content of the message
 // @param replyMarkup Reply markup for the message; may be null
-func NewMessage(iD int64, sender MessageSender, chatID int64, sendingState MessageSendingState, schedulingState MessageSchedulingState, isOutgoing bool, isPinned bool, canBeEdited bool, canBeForwarded bool, canBeDeletedOnlyForSelf bool, canBeDeletedForAllUsers bool, canGetStatistics bool, canGetMessageThread bool, isChannelPost bool, containsUnreadMention bool, date int32, editDate int32, forwardInfo *MessageForwardInfo, interactionInfo *MessageInteractionInfo, replyInChatID int64, replyToMessageID int64, messageThreadID int64, tTL int32, tTLExpiresIn float64, viaBotUserID int32, authorSignature string, mediaAlbumID JSONInt64, restrictionReason string, content MessageContent, replyMarkup ReplyMarkup) *Message {
+func NewMessage(iD int64, sender MessageSender, chatID int64, sendingState MessageSendingState, schedulingState MessageSchedulingState, isOutgoing bool, isPinned bool, canBeEdited bool, canBeForwarded bool, canBeDeletedOnlyForSelf bool, canBeDeletedForAllUsers bool, canGetStatistics bool, canGetMessageThread bool, isChannelPost bool, containsUnreadMention bool, date int32, editDate int32, forwardInfo *MessageForwardInfo, interactionInfo *MessageInteractionInfo, replyInChatID int64, replyToMessageID int64, messageThreadID int64, tTL int32, tTLExpiresIn float64, viaBotUserID int64, authorSignature string, mediaAlbumID JSONInt64, restrictionReason string, content MessageContent, replyMarkup ReplyMarkup) *Message {
 	messageTemp := Message{
 		tdCommon:                tdCommon{Type: "message"},
 		ID:                      iD,
@@ -6530,7 +6530,7 @@ func (message *Message) UnmarshalJSON(b []byte) error {
 		MessageThreadID         int64                   `json:"message_thread_id"`            // If non-zero, the identifier of the message thread the message belongs to; unique within the chat to which the message belongs
 		TTL                     int32                   `json:"ttl"`                          // For self-destructing messages, the message's TTL (Time To Live), in seconds; 0 if none. TDLib will send updateDeleteMessages or updateMessageContent once the TTL expires
 		TTLExpiresIn            float64                 `json:"ttl_expires_in"`               // Time left before the message expires, in seconds
-		ViaBotUserID            int32                   `json:"via_bot_user_id"`              // If non-zero, the user identifier of the bot through which this message was sent
+		ViaBotUserID            int64                   `json:"via_bot_user_id"`              // If non-zero, the user identifier of the bot through which this message was sent
 		AuthorSignature         string                  `json:"author_signature"`             // For channel posts and anonymous group messages, optional author signature
 		MediaAlbumID            JSONInt64               `json:"media_album_id"`               // Unique identifier of an album this message belongs to. Only audios, documents, photos and videos can be grouped together in albums
 		RestrictionReason       string                  `json:"restriction_reason"`           // If non-empty, contains a human-readable description of the reason why access to this message must be restricted
@@ -6858,7 +6858,7 @@ func (draftMessage *DraftMessage) UnmarshalJSON(b []byte) error {
 // ChatTypePrivate An ordinary chat with a user
 type ChatTypePrivate struct {
 	tdCommon
-	UserID int32 `json:"user_id"` // User identifier
+	UserID int64 `json:"user_id"` // User identifier
 }
 
 // MessageType return the string telegram-type of ChatTypePrivate
@@ -6869,7 +6869,7 @@ func (chatTypePrivate *ChatTypePrivate) MessageType() string {
 // NewChatTypePrivate creates a new ChatTypePrivate
 //
 // @param userID User identifier
-func NewChatTypePrivate(userID int32) *ChatTypePrivate {
+func NewChatTypePrivate(userID int64) *ChatTypePrivate {
 	chatTypePrivateTemp := ChatTypePrivate{
 		tdCommon: tdCommon{Type: "chatTypePrivate"},
 		UserID:   userID,
@@ -6886,7 +6886,7 @@ func (chatTypePrivate *ChatTypePrivate) GetChatTypeEnum() ChatTypeEnum {
 // ChatTypeBasicGroup A basic group (i.e., a chat with 0-200 other users)
 type ChatTypeBasicGroup struct {
 	tdCommon
-	BasicGroupID int32 `json:"basic_group_id"` // Basic group identifier
+	BasicGroupID int64 `json:"basic_group_id"` // Basic group identifier
 }
 
 // MessageType return the string telegram-type of ChatTypeBasicGroup
@@ -6897,7 +6897,7 @@ func (chatTypeBasicGroup *ChatTypeBasicGroup) MessageType() string {
 // NewChatTypeBasicGroup creates a new ChatTypeBasicGroup
 //
 // @param basicGroupID Basic group identifier
-func NewChatTypeBasicGroup(basicGroupID int32) *ChatTypeBasicGroup {
+func NewChatTypeBasicGroup(basicGroupID int64) *ChatTypeBasicGroup {
 	chatTypeBasicGroupTemp := ChatTypeBasicGroup{
 		tdCommon:     tdCommon{Type: "chatTypeBasicGroup"},
 		BasicGroupID: basicGroupID,
@@ -6914,7 +6914,7 @@ func (chatTypeBasicGroup *ChatTypeBasicGroup) GetChatTypeEnum() ChatTypeEnum {
 // ChatTypeSupergroup A supergroup (i.e. a chat with up to GetOption("supergroup_max_size") other users), or channel (with unlimited members)
 type ChatTypeSupergroup struct {
 	tdCommon
-	SupergroupID int32 `json:"supergroup_id"` // Supergroup or channel identifier
+	SupergroupID int64 `json:"supergroup_id"` // Supergroup or channel identifier
 	IsChannel    bool  `json:"is_channel"`    // True, if the supergroup is a channel
 }
 
@@ -6927,7 +6927,7 @@ func (chatTypeSupergroup *ChatTypeSupergroup) MessageType() string {
 //
 // @param supergroupID Supergroup or channel identifier
 // @param isChannel True, if the supergroup is a channel
-func NewChatTypeSupergroup(supergroupID int32, isChannel bool) *ChatTypeSupergroup {
+func NewChatTypeSupergroup(supergroupID int64, isChannel bool) *ChatTypeSupergroup {
 	chatTypeSupergroupTemp := ChatTypeSupergroup{
 		tdCommon:     tdCommon{Type: "chatTypeSupergroup"},
 		SupergroupID: supergroupID,
@@ -6945,8 +6945,8 @@ func (chatTypeSupergroup *ChatTypeSupergroup) GetChatTypeEnum() ChatTypeEnum {
 // ChatTypeSecret A secret chat with a user
 type ChatTypeSecret struct {
 	tdCommon
-	SecretChatID int32 `json:"secret_chat_id"` // Secret chat identifier
-	UserID       int32 `json:"user_id"`        // User identifier of the secret chat peer
+	SecretChatID int64 `json:"secret_chat_id"` // Secret chat identifier
+	UserID       int64 `json:"user_id"`        // User identifier of the secret chat peer
 }
 
 // MessageType return the string telegram-type of ChatTypeSecret
@@ -6958,7 +6958,7 @@ func (chatTypeSecret *ChatTypeSecret) MessageType() string {
 //
 // @param secretChatID Secret chat identifier
 // @param userID User identifier of the secret chat peer
-func NewChatTypeSecret(secretChatID int32, userID int32) *ChatTypeSecret {
+func NewChatTypeSecret(secretChatID int64, userID int64) *ChatTypeSecret {
 	chatTypeSecretTemp := ChatTypeSecret{
 		tdCommon:     tdCommon{Type: "chatTypeSecret"},
 		SecretChatID: secretChatID,
@@ -7035,7 +7035,7 @@ func NewChatFilter(title string, iconName string, pinnedChatIDs []int64, include
 // ChatFilterInfo Contains basic information about a chat filter
 type ChatFilterInfo struct {
 	tdCommon
-	ID       int32  `json:"id"`        // Unique chat filter identifier
+	ID       int64  `json:"id"`        // Unique chat filter identifier
 	Title    string `json:"title"`     // The title of the filter; 1-12 characters without line feeds
 	IconName string `json:"icon_name"` // The icon name for short filter representation. One of "All", "Unread", "Unmuted", "Bots", "Channels", "Groups", "Private", "Custom", "Setup", "Cat", "Crown", "Favorite", "Flower", "Game", "Home", "Love", "Mask", "Party", "Sport", "Study", "Trade", "Travel", "Work"
 }
@@ -7161,7 +7161,7 @@ func (chatListArchive *ChatListArchive) GetChatListEnum() ChatListEnum {
 // ChatListFilter A list of chats belonging to a chat filter
 type ChatListFilter struct {
 	tdCommon
-	ChatFilterID int32 `json:"chat_filter_id"` // Chat filter identifier
+	ChatFilterID int64 `json:"chat_filter_id"` // Chat filter identifier
 }
 
 // MessageType return the string telegram-type of ChatListFilter
@@ -7172,7 +7172,7 @@ func (chatListFilter *ChatListFilter) MessageType() string {
 // NewChatListFilter creates a new ChatListFilter
 //
 // @param chatFilterID Chat filter identifier
-func NewChatListFilter(chatFilterID int32) *ChatListFilter {
+func NewChatListFilter(chatFilterID int64) *ChatListFilter {
 	chatListFilterTemp := ChatListFilter{
 		tdCommon:     tdCommon{Type: "chatListFilter"},
 		ChatFilterID: chatFilterID,
@@ -8336,7 +8336,7 @@ type LoginURLInfoRequestConfirmation struct {
 	tdCommon
 	URL                string `json:"url"`                  // An HTTP URL to be opened
 	Domain             string `json:"domain"`               // A domain of the URL
-	BotUserID          int32  `json:"bot_user_id"`          // User identifier of a bot linked with the website
+	BotUserID          int64  `json:"bot_user_id"`          // User identifier of a bot linked with the website
 	RequestWriteAccess bool   `json:"request_write_access"` // True, if the user needs to be requested to give the permission to the bot to send them messages
 }
 
@@ -8351,7 +8351,7 @@ func (loginURLInfoRequestConfirmation *LoginURLInfoRequestConfirmation) MessageT
 // @param domain A domain of the URL
 // @param botUserID User identifier of a bot linked with the website
 // @param requestWriteAccess True, if the user needs to be requested to give the permission to the bot to send them messages
-func NewLoginURLInfoRequestConfirmation(uRL string, domain string, botUserID int32, requestWriteAccess bool) *LoginURLInfoRequestConfirmation {
+func NewLoginURLInfoRequestConfirmation(uRL string, domain string, botUserID int64, requestWriteAccess bool) *LoginURLInfoRequestConfirmation {
 	loginURLInfoRequestConfirmationTemp := LoginURLInfoRequestConfirmation{
 		tdCommon:           tdCommon{Type: "loginUrlInfoRequestConfirmation"},
 		URL:                uRL,
@@ -11552,7 +11552,7 @@ func NewPaymentResult(success bool, verificationURL string) *PaymentResult {
 type PaymentReceipt struct {
 	tdCommon
 	Date                   int32           `json:"date"`                      // Point in time (Unix timestamp) when the payment was made
-	PaymentsProviderUserID int32           `json:"payments_provider_user_id"` // User identifier of the payment provider bot
+	PaymentsProviderUserID int64           `json:"payments_provider_user_id"` // User identifier of the payment provider bot
 	Invoice                *Invoice        `json:"invoice"`                   // Contains information about the invoice
 	OrderInfo              *OrderInfo      `json:"order_info"`                // Contains order information; may be null
 	ShippingOption         *ShippingOption `json:"shipping_option"`           // Chosen shipping option; may be null
@@ -11572,7 +11572,7 @@ func (paymentReceipt *PaymentReceipt) MessageType() string {
 // @param orderInfo Contains order information; may be null
 // @param shippingOption Chosen shipping option; may be null
 // @param credentialsTitle Title of the saved credentials
-func NewPaymentReceipt(date int32, paymentsProviderUserID int32, invoice *Invoice, orderInfo *OrderInfo, shippingOption *ShippingOption, credentialsTitle string) *PaymentReceipt {
+func NewPaymentReceipt(date int32, paymentsProviderUserID int64, invoice *Invoice, orderInfo *OrderInfo, shippingOption *ShippingOption, credentialsTitle string) *PaymentReceipt {
 	paymentReceiptTemp := PaymentReceipt{
 		tdCommon:               tdCommon{Type: "paymentReceipt"},
 		Date:                   date,
@@ -14727,7 +14727,7 @@ func (messageChatJoinByLink *MessageChatJoinByLink) GetMessageContentEnum() Mess
 // MessageChatDeleteMember A chat member was deleted
 type MessageChatDeleteMember struct {
 	tdCommon
-	UserID int32 `json:"user_id"` // User identifier of the deleted chat member
+	UserID int64 `json:"user_id"` // User identifier of the deleted chat member
 }
 
 // MessageType return the string telegram-type of MessageChatDeleteMember
@@ -15628,7 +15628,7 @@ func (textEntityTypeTextURL *TextEntityTypeTextURL) GetTextEntityTypeEnum() Text
 // TextEntityTypeMentionName A text shows instead of a raw mention of the user (e.g., when the user has no username)
 type TextEntityTypeMentionName struct {
 	tdCommon
-	UserID int32 `json:"user_id"` // Identifier of the mentioned user
+	UserID int64 `json:"user_id"` // Identifier of the mentioned user
 }
 
 // MessageType return the string telegram-type of TextEntityTypeMentionName
@@ -16606,7 +16606,7 @@ func (inputMessageDice *InputMessageDice) GetInputMessageContentEnum() InputMess
 // InputMessageGame A message with a game; not supported for channels or secret chats
 type InputMessageGame struct {
 	tdCommon
-	BotUserID     int32  `json:"bot_user_id"`     // User identifier of the bot that owns the game
+	BotUserID     int64  `json:"bot_user_id"`     // User identifier of the bot that owns the game
 	GameShortName string `json:"game_short_name"` // Short name of the game
 }
 
@@ -16619,7 +16619,7 @@ func (inputMessageGame *InputMessageGame) MessageType() string {
 //
 // @param botUserID User identifier of the bot that owns the game
 // @param gameShortName Short name of the game
-func NewInputMessageGame(botUserID int32, gameShortName string) *InputMessageGame {
+func NewInputMessageGame(botUserID int64, gameShortName string) *InputMessageGame {
 	inputMessageGameTemp := InputMessageGame{
 		tdCommon:      tdCommon{Type: "inputMessageGame"},
 		BotUserID:     botUserID,
@@ -18463,7 +18463,7 @@ func (callStateError *CallStateError) GetCallStateEnum() CallStateEnum {
 // GroupCallRecentSpeaker Describes a recently speaking user in a group call
 type GroupCallRecentSpeaker struct {
 	tdCommon
-	UserID     int32 `json:"user_id"`     // User identifier
+	UserID     int64 `json:"user_id"`     // User identifier
 	IsSpeaking bool  `json:"is_speaking"` // True, is the user has spoken recently
 }
 
@@ -18688,7 +18688,7 @@ func NewGroupCallJoinResponse(payload *GroupCallPayload, candidates []GroupCallJ
 // GroupCallParticipant Represents a group call participant
 type GroupCallParticipant struct {
 	tdCommon
-	UserID                     int32     `json:"user_id"`                         // Identifier of the user
+	UserID                     int64     `json:"user_id"`                         // Identifier of the user
 	Source                     int32     `json:"source"`                          // User's synchronization source
 	IsSpeaking                 bool      `json:"is_speaking"`                     // True, if the participant is speaking as set by setGroupCallParticipantIsSpeaking
 	CanBeMutedForAllUsers      bool      `json:"can_be_muted_for_all_users"`      // True, if the current user can mute the participant for all other group call participants
@@ -18961,7 +18961,7 @@ func (callProblemPixelatedVideo *CallProblemPixelatedVideo) GetCallProblemEnum()
 type Call struct {
 	tdCommon
 	ID         int32     `json:"id"`          // Call identifier, not persistent
-	UserID     int32     `json:"user_id"`     // Peer user identifier
+	UserID     int64     `json:"user_id"`     // Peer user identifier
 	IsOutgoing bool      `json:"is_outgoing"` // True, if the call is outgoing
 	IsVideo    bool      `json:"is_video"`    // True, if the call is a video call
 	State      CallState `json:"state"`       // Call state
@@ -19002,7 +19002,7 @@ func (call *Call) UnmarshalJSON(b []byte) error {
 	tempObj := struct {
 		tdCommon
 		ID         int32 `json:"id"`          // Call identifier, not persistent
-		UserID     int32 `json:"user_id"`     // Peer user identifier
+		UserID     int64 `json:"user_id"`     // Peer user identifier
 		IsOutgoing bool  `json:"is_outgoing"` // True, if the call is outgoing
 		IsVideo    bool  `json:"is_video"`    // True, if the call is a video call
 
@@ -20851,7 +20851,7 @@ func NewCustomRequestResult(result string) *CustomRequestResult {
 type GameHighScore struct {
 	tdCommon
 	Position int32 `json:"position"` // Position in the high score table
-	UserID   int32 `json:"user_id"`  // User identifier
+	UserID   int64 `json:"user_id"`  // User identifier
 	Score    int32 `json:"score"`    // User score
 }
 
@@ -21093,7 +21093,7 @@ func (chatEventMemberLeft *ChatEventMemberLeft) GetChatEventActionEnum() ChatEve
 // ChatEventMemberInvited A new chat member was invited
 type ChatEventMemberInvited struct {
 	tdCommon
-	UserID int32            `json:"user_id"` // New member user identifier
+	UserID int64            `json:"user_id"` // New member user identifier
 	Status ChatMemberStatus `json:"status"`  // New member status
 }
 
@@ -21125,7 +21125,7 @@ func (chatEventMemberInvited *ChatEventMemberInvited) UnmarshalJSON(b []byte) er
 	}
 	tempObj := struct {
 		tdCommon
-		UserID int32 `json:"user_id"` // New member user identifier
+		UserID int64 `json:"user_id"` // New member user identifier
 
 	}{}
 	err = json.Unmarshal(b, &tempObj)
@@ -21150,7 +21150,7 @@ func (chatEventMemberInvited *ChatEventMemberInvited) GetChatEventActionEnum() C
 // ChatEventMemberPromoted A chat member has gained/lost administrator status, or the list of their administrator privileges has changed
 type ChatEventMemberPromoted struct {
 	tdCommon
-	UserID    int32            `json:"user_id"`    // Chat member user identifier
+	UserID    int64            `json:"user_id"`    // Chat member user identifier
 	OldStatus ChatMemberStatus `json:"old_status"` // Previous status of the chat member
 	NewStatus ChatMemberStatus `json:"new_status"` // New status of the chat member
 }
@@ -21185,7 +21185,7 @@ func (chatEventMemberPromoted *ChatEventMemberPromoted) UnmarshalJSON(b []byte) 
 	}
 	tempObj := struct {
 		tdCommon
-		UserID int32 `json:"user_id"` // Chat member user identifier
+		UserID int64 `json:"user_id"` // Chat member user identifier
 
 	}{}
 	err = json.Unmarshal(b, &tempObj)
@@ -21213,7 +21213,7 @@ func (chatEventMemberPromoted *ChatEventMemberPromoted) GetChatEventActionEnum()
 // ChatEventMemberRestricted A chat member was restricted/unrestricted or banned/unbanned, or the list of their restrictions has changed
 type ChatEventMemberRestricted struct {
 	tdCommon
-	UserID    int32            `json:"user_id"`    // Chat member user identifier
+	UserID    int64            `json:"user_id"`    // Chat member user identifier
 	OldStatus ChatMemberStatus `json:"old_status"` // Previous status of the chat member
 	NewStatus ChatMemberStatus `json:"new_status"` // New status of the chat member
 }
@@ -21248,7 +21248,7 @@ func (chatEventMemberRestricted *ChatEventMemberRestricted) UnmarshalJSON(b []by
 	}
 	tempObj := struct {
 		tdCommon
-		UserID int32 `json:"user_id"` // Chat member user identifier
+		UserID int64 `json:"user_id"` // Chat member user identifier
 
 	}{}
 	err = json.Unmarshal(b, &tempObj)
@@ -21695,7 +21695,7 @@ func (chatEventVoiceChatDiscarded *ChatEventVoiceChatDiscarded) GetChatEventActi
 // ChatEventVoiceChatParticipantIsMutedToggled A voice chat participant was muted or unmuted
 type ChatEventVoiceChatParticipantIsMutedToggled struct {
 	tdCommon
-	UserID  int32 `json:"user_id"`  // Identifier of the affected user
+	UserID  int64 `json:"user_id"`  // Identifier of the affected user
 	IsMuted bool  `json:"is_muted"` // New value of is_muted
 }
 
@@ -21756,7 +21756,7 @@ type ChatEvent struct {
 	tdCommon
 	ID     JSONInt64       `json:"id"`      // Chat event identifier
 	Date   int32           `json:"date"`    // Point in time (Unix timestamp) when the event happened
-	UserID int32           `json:"user_id"` // Identifier of the user who performed the action that triggered the event
+	UserID int64           `json:"user_id"` // Identifier of the user who performed the action that triggered the event
 	Action ChatEventAction `json:"action"`  // Action performed by the user
 }
 
@@ -21794,7 +21794,7 @@ func (chatEvent *ChatEvent) UnmarshalJSON(b []byte) error {
 		tdCommon
 		ID     JSONInt64 `json:"id"`      // Chat event identifier
 		Date   int32     `json:"date"`    // Point in time (Unix timestamp) when the event happened
-		UserID int32     `json:"user_id"` // Identifier of the user who performed the action that triggered the event
+		UserID int64     `json:"user_id"` // Identifier of the user who performed the action that triggered the event
 
 	}{}
 	err = json.Unmarshal(b, &tempObj)
@@ -25237,7 +25237,7 @@ type ConnectedWebsite struct {
 	tdCommon
 	ID             JSONInt64 `json:"id"`               // Website identifier
 	DomainName     string    `json:"domain_name"`      // The domain name of the website
-	BotUserID      int32     `json:"bot_user_id"`      // User identifier of a bot linked with the website
+	BotUserID      int64     `json:"bot_user_id"`      // User identifier of a bot linked with the website
 	Browser        string    `json:"browser"`          // The version of a browser used to log in
 	Platform       string    `json:"platform"`         // Operating system the browser is running on
 	LogInDate      int32     `json:"log_in_date"`      // Point in time (Unix timestamp) when the user was logged in
@@ -25262,7 +25262,7 @@ func (connectedWebsite *ConnectedWebsite) MessageType() string {
 // @param lastActiveDate Point in time (Unix timestamp) when obtained authorization was last used
 // @param iP IP address from which the user was logged in, in human-readable format
 // @param location Human-readable description of a country and a region, from which the user was logged in, based on the IP address
-func NewConnectedWebsite(iD JSONInt64, domainName string, botUserID int32, browser string, platform string, logInDate int32, lastActiveDate int32, iP string, location string) *ConnectedWebsite {
+func NewConnectedWebsite(iD JSONInt64, domainName string, botUserID int64, browser string, platform string, logInDate int32, lastActiveDate int32, iP string, location string) *ConnectedWebsite {
 	connectedWebsiteTemp := ConnectedWebsite{
 		tdCommon:       tdCommon{Type: "connectedWebsite"},
 		ID:             iD,
@@ -26784,7 +26784,7 @@ func (topChatCategoryForwardChats *TopChatCategoryForwardChats) GetTopChatCatego
 // TMeURLTypeUser A URL linking to a user
 type TMeURLTypeUser struct {
 	tdCommon
-	UserID int32 `json:"user_id"` // Identifier of the user
+	UserID int64 `json:"user_id"` // Identifier of the user
 }
 
 // MessageType return the string telegram-type of TMeURLTypeUser
@@ -27666,7 +27666,7 @@ func NewChatStatisticsMessageInteractionInfo(messageID int64, viewCount int32, f
 // ChatStatisticsMessageSenderInfo Contains statistics about messages sent by a user
 type ChatStatisticsMessageSenderInfo struct {
 	tdCommon
-	UserID                int32 `json:"user_id"`                 // User identifier
+	UserID                int64 `json:"user_id"`                 // User identifier
 	SentMessageCount      int32 `json:"sent_message_count"`      // Number of sent messages
 	AverageCharacterCount int32 `json:"average_character_count"` // Average number of characters in sent messages
 }
@@ -27681,7 +27681,7 @@ func (chatStatisticsMessageSenderInfo *ChatStatisticsMessageSenderInfo) MessageT
 // @param userID User identifier
 // @param sentMessageCount Number of sent messages
 // @param averageCharacterCount Average number of characters in sent messages
-func NewChatStatisticsMessageSenderInfo(userID int32, sentMessageCount int32, averageCharacterCount int32) *ChatStatisticsMessageSenderInfo {
+func NewChatStatisticsMessageSenderInfo(userID int64, sentMessageCount int32, averageCharacterCount int32) *ChatStatisticsMessageSenderInfo {
 	chatStatisticsMessageSenderInfoTemp := ChatStatisticsMessageSenderInfo{
 		tdCommon:              tdCommon{Type: "chatStatisticsMessageSenderInfo"},
 		UserID:                userID,
@@ -27695,7 +27695,7 @@ func NewChatStatisticsMessageSenderInfo(userID int32, sentMessageCount int32, av
 // ChatStatisticsAdministratorActionsInfo Contains statistics about administrator actions done by a user
 type ChatStatisticsAdministratorActionsInfo struct {
 	tdCommon
-	UserID              int32 `json:"user_id"`               // Administrator user identifier
+	UserID              int64 `json:"user_id"`               // Administrator user identifier
 	DeletedMessageCount int32 `json:"deleted_message_count"` // Number of messages deleted by the administrator
 	BannedUserCount     int32 `json:"banned_user_count"`     // Number of users banned by the administrator
 	RestrictedUserCount int32 `json:"restricted_user_count"` // Number of users restricted by the administrator
@@ -27727,7 +27727,7 @@ func NewChatStatisticsAdministratorActionsInfo(userID int32, deletedMessageCount
 // ChatStatisticsInviterInfo Contains statistics about number of new members invited by a user
 type ChatStatisticsInviterInfo struct {
 	tdCommon
-	UserID           int32 `json:"user_id"`            // User identifier
+	UserID           int64 `json:"user_id"`            // User identifier
 	AddedMemberCount int32 `json:"added_member_count"` // Number of new members invited by the user
 }
 
@@ -29543,7 +29543,7 @@ type UpdateUserChatAction struct {
 	tdCommon
 	ChatID          int64      `json:"chat_id"`           // Chat identifier
 	MessageThreadID int64      `json:"message_thread_id"` // If not 0, a message thread identifier in which the action was performed
-	UserID          int32      `json:"user_id"`           // Identifier of a user performing an action
+	UserID          int64      `json:"user_id"`           // Identifier of a user performing an action
 	Action          ChatAction `json:"action"`            // The action description
 }
 
@@ -29581,7 +29581,7 @@ func (updateUserChatAction *UpdateUserChatAction) UnmarshalJSON(b []byte) error 
 		tdCommon
 		ChatID          int64 `json:"chat_id"`           // Chat identifier
 		MessageThreadID int64 `json:"message_thread_id"` // If not 0, a message thread identifier in which the action was performed
-		UserID          int32 `json:"user_id"`           // Identifier of a user performing an action
+		UserID          int64 `json:"user_id"`           // Identifier of a user performing an action
 
 	}{}
 	err = json.Unmarshal(b, &tempObj)
@@ -29608,7 +29608,7 @@ func (updateUserChatAction *UpdateUserChatAction) GetUpdateEnum() UpdateEnum {
 // UpdateUserStatus The user went online or offline
 type UpdateUserStatus struct {
 	tdCommon
-	UserID int32      `json:"user_id"` // User identifier
+	UserID int64      `json:"user_id"` // User identifier
 	Status UserStatus `json:"status"`  // New status of the user
 }
 
@@ -29640,7 +29640,7 @@ func (updateUserStatus *UpdateUserStatus) UnmarshalJSON(b []byte) error {
 	}
 	tempObj := struct {
 		tdCommon
-		UserID int32 `json:"user_id"` // User identifier
+		UserID int64 `json:"user_id"` // User identifier
 
 	}{}
 	err = json.Unmarshal(b, &tempObj)
@@ -29777,7 +29777,7 @@ func (updateSecretChat *UpdateSecretChat) GetUpdateEnum() UpdateEnum {
 // UpdateUserFullInfo Some data from userFullInfo has been changed
 type UpdateUserFullInfo struct {
 	tdCommon
-	UserID       int32         `json:"user_id"`        // User identifier
+	UserID       int64         `json:"user_id"`        // User identifier
 	UserFullInfo *UserFullInfo `json:"user_full_info"` // New full information about the user
 }
 
@@ -30828,7 +30828,7 @@ func (updateSuggestedActions *UpdateSuggestedActions) GetUpdateEnum() UpdateEnum
 type UpdateNewInlineQuery struct {
 	tdCommon
 	ID           JSONInt64 `json:"id"`             // Unique query identifier
-	SenderUserID int32     `json:"sender_user_id"` // Identifier of the user who sent the query
+	SenderUserID int64     `json:"sender_user_id"` // Identifier of the user who sent the query
 	UserLocation *Location `json:"user_location"`  // User location; may be null
 	ChatType     ChatType  `json:"chat_type"`      // Contains information about the type of the chat, from which the query originated; may be null if unknown
 	Query        string    `json:"query"`          // Text of the query
@@ -30848,7 +30848,7 @@ func (updateNewInlineQuery *UpdateNewInlineQuery) MessageType() string {
 // @param chatType Contains information about the type of the chat, from which the query originated; may be null if unknown
 // @param query Text of the query
 // @param offset Offset of the first entry to return
-func NewUpdateNewInlineQuery(iD JSONInt64, senderUserID int32, userLocation *Location, chatType ChatType, query string, offset string) *UpdateNewInlineQuery {
+func NewUpdateNewInlineQuery(iD JSONInt64, senderUserID int64, userLocation *Location, chatType ChatType, query string, offset string) *UpdateNewInlineQuery {
 	updateNewInlineQueryTemp := UpdateNewInlineQuery{
 		tdCommon:     tdCommon{Type: "updateNewInlineQuery"},
 		ID:           iD,
@@ -30872,7 +30872,7 @@ func (updateNewInlineQuery *UpdateNewInlineQuery) UnmarshalJSON(b []byte) error 
 	tempObj := struct {
 		tdCommon
 		ID           JSONInt64 `json:"id"`             // Unique query identifier
-		SenderUserID int32     `json:"sender_user_id"` // Identifier of the user who sent the query
+		SenderUserID int64     `json:"sender_user_id"` // Identifier of the user who sent the query
 		UserLocation *Location `json:"user_location"`  // User location; may be null
 		Query        string    `json:"query"`          // Text of the query
 		Offset       string    `json:"offset"`         // Offset of the first entry to return
@@ -30903,7 +30903,7 @@ func (updateNewInlineQuery *UpdateNewInlineQuery) GetUpdateEnum() UpdateEnum {
 // UpdateNewChosenInlineResult The user has chosen a result of an inline query; for bots only
 type UpdateNewChosenInlineResult struct {
 	tdCommon
-	SenderUserID    int32     `json:"sender_user_id"`    // Identifier of the user who sent the query
+	SenderUserID    int64     `json:"sender_user_id"`    // Identifier of the user who sent the query
 	UserLocation    *Location `json:"user_location"`     // User location; may be null
 	Query           string    `json:"query"`             // Text of the query
 	ResultID        string    `json:"result_id"`         // Identifier of the chosen result
@@ -30922,7 +30922,7 @@ func (updateNewChosenInlineResult *UpdateNewChosenInlineResult) MessageType() st
 // @param query Text of the query
 // @param resultID Identifier of the chosen result
 // @param inlineMessageID Identifier of the sent inline message, if known
-func NewUpdateNewChosenInlineResult(senderUserID int32, userLocation *Location, query string, resultID string, inlineMessageID string) *UpdateNewChosenInlineResult {
+func NewUpdateNewChosenInlineResult(senderUserID int64, userLocation *Location, query string, resultID string, inlineMessageID string) *UpdateNewChosenInlineResult {
 	updateNewChosenInlineResultTemp := UpdateNewChosenInlineResult{
 		tdCommon:        tdCommon{Type: "updateNewChosenInlineResult"},
 		SenderUserID:    senderUserID,
@@ -30944,7 +30944,7 @@ func (updateNewChosenInlineResult *UpdateNewChosenInlineResult) GetUpdateEnum() 
 type UpdateNewCallbackQuery struct {
 	tdCommon
 	ID           JSONInt64            `json:"id"`             // Unique query identifier
-	SenderUserID int32                `json:"sender_user_id"` // Identifier of the user who sent the query
+	SenderUserID int64                `json:"sender_user_id"` // Identifier of the user who sent the query
 	ChatID       int64                `json:"chat_id"`        // Identifier of the chat where the query was sent
 	MessageID    int64                `json:"message_id"`     // Identifier of the message, from which the query originated
 	ChatInstance JSONInt64            `json:"chat_instance"`  // Identifier that uniquely corresponds to the chat to which the message was sent
@@ -30964,7 +30964,7 @@ func (updateNewCallbackQuery *UpdateNewCallbackQuery) MessageType() string {
 // @param messageID Identifier of the message, from which the query originated
 // @param chatInstance Identifier that uniquely corresponds to the chat to which the message was sent
 // @param payload Query payload
-func NewUpdateNewCallbackQuery(iD JSONInt64, senderUserID int32, chatID int64, messageID int64, chatInstance JSONInt64, payload CallbackQueryPayload) *UpdateNewCallbackQuery {
+func NewUpdateNewCallbackQuery(iD JSONInt64, senderUserID int64, chatID int64, messageID int64, chatInstance JSONInt64, payload CallbackQueryPayload) *UpdateNewCallbackQuery {
 	updateNewCallbackQueryTemp := UpdateNewCallbackQuery{
 		tdCommon:     tdCommon{Type: "updateNewCallbackQuery"},
 		ID:           iD,
@@ -30988,7 +30988,7 @@ func (updateNewCallbackQuery *UpdateNewCallbackQuery) UnmarshalJSON(b []byte) er
 	tempObj := struct {
 		tdCommon
 		ID           JSONInt64 `json:"id"`             // Unique query identifier
-		SenderUserID int32     `json:"sender_user_id"` // Identifier of the user who sent the query
+		SenderUserID int64     `json:"sender_user_id"` // Identifier of the user who sent the query
 		ChatID       int64     `json:"chat_id"`        // Identifier of the chat where the query was sent
 		MessageID    int64     `json:"message_id"`     // Identifier of the message, from which the query originated
 		ChatInstance JSONInt64 `json:"chat_instance"`  // Identifier that uniquely corresponds to the chat to which the message was sent
@@ -31021,7 +31021,7 @@ func (updateNewCallbackQuery *UpdateNewCallbackQuery) GetUpdateEnum() UpdateEnum
 type UpdateNewInlineCallbackQuery struct {
 	tdCommon
 	ID              JSONInt64            `json:"id"`                // Unique query identifier
-	SenderUserID    int32                `json:"sender_user_id"`    // Identifier of the user who sent the query
+	SenderUserID    int64                `json:"sender_user_id"`    // Identifier of the user who sent the query
 	InlineMessageID string               `json:"inline_message_id"` // Identifier of the inline message, from which the query originated
 	ChatInstance    JSONInt64            `json:"chat_instance"`     // An identifier uniquely corresponding to the chat a message was sent to
 	Payload         CallbackQueryPayload `json:"payload"`           // Query payload
@@ -31039,7 +31039,7 @@ func (updateNewInlineCallbackQuery *UpdateNewInlineCallbackQuery) MessageType() 
 // @param inlineMessageID Identifier of the inline message, from which the query originated
 // @param chatInstance An identifier uniquely corresponding to the chat a message was sent to
 // @param payload Query payload
-func NewUpdateNewInlineCallbackQuery(iD JSONInt64, senderUserID int32, inlineMessageID string, chatInstance JSONInt64, payload CallbackQueryPayload) *UpdateNewInlineCallbackQuery {
+func NewUpdateNewInlineCallbackQuery(iD JSONInt64, senderUserID int64, inlineMessageID string, chatInstance JSONInt64, payload CallbackQueryPayload) *UpdateNewInlineCallbackQuery {
 	updateNewInlineCallbackQueryTemp := UpdateNewInlineCallbackQuery{
 		tdCommon:        tdCommon{Type: "updateNewInlineCallbackQuery"},
 		ID:              iD,
@@ -31062,7 +31062,7 @@ func (updateNewInlineCallbackQuery *UpdateNewInlineCallbackQuery) UnmarshalJSON(
 	tempObj := struct {
 		tdCommon
 		ID              JSONInt64 `json:"id"`                // Unique query identifier
-		SenderUserID    int32     `json:"sender_user_id"`    // Identifier of the user who sent the query
+		SenderUserID    int64     `json:"sender_user_id"`    // Identifier of the user who sent the query
 		InlineMessageID string    `json:"inline_message_id"` // Identifier of the inline message, from which the query originated
 		ChatInstance    JSONInt64 `json:"chat_instance"`     // An identifier uniquely corresponding to the chat a message was sent to
 
@@ -31093,7 +31093,7 @@ func (updateNewInlineCallbackQuery *UpdateNewInlineCallbackQuery) GetUpdateEnum(
 type UpdateNewShippingQuery struct {
 	tdCommon
 	ID              JSONInt64 `json:"id"`               // Unique query identifier
-	SenderUserID    int32     `json:"sender_user_id"`   // Identifier of the user who sent the query
+	SenderUserID    int64     `json:"sender_user_id"`   // Identifier of the user who sent the query
 	InvoicePayload  string    `json:"invoice_payload"`  // Invoice payload
 	ShippingAddress *Address  `json:"shipping_address"` // User shipping address
 }
@@ -31109,7 +31109,7 @@ func (updateNewShippingQuery *UpdateNewShippingQuery) MessageType() string {
 // @param senderUserID Identifier of the user who sent the query
 // @param invoicePayload Invoice payload
 // @param shippingAddress User shipping address
-func NewUpdateNewShippingQuery(iD JSONInt64, senderUserID int32, invoicePayload string, shippingAddress *Address) *UpdateNewShippingQuery {
+func NewUpdateNewShippingQuery(iD JSONInt64, senderUserID int64, invoicePayload string, shippingAddress *Address) *UpdateNewShippingQuery {
 	updateNewShippingQueryTemp := UpdateNewShippingQuery{
 		tdCommon:        tdCommon{Type: "updateNewShippingQuery"},
 		ID:              iD,
@@ -31130,7 +31130,7 @@ func (updateNewShippingQuery *UpdateNewShippingQuery) GetUpdateEnum() UpdateEnum
 type UpdateNewPreCheckoutQuery struct {
 	tdCommon
 	ID               JSONInt64  `json:"id"`                 // Unique query identifier
-	SenderUserID     int32      `json:"sender_user_id"`     // Identifier of the user who sent the query
+	SenderUserID     int64      `json:"sender_user_id"`     // Identifier of the user who sent the query
 	Currency         string     `json:"currency"`           // Currency for the product price
 	TotalAmount      int64      `json:"total_amount"`       // Total price for the product, in the minimal quantity of the currency
 	InvoicePayload   []byte     `json:"invoice_payload"`    // Invoice payload
@@ -31152,7 +31152,7 @@ func (updateNewPreCheckoutQuery *UpdateNewPreCheckoutQuery) MessageType() string
 // @param invoicePayload Invoice payload
 // @param shippingOptionID Identifier of a shipping option chosen by the user; may be empty if not applicable
 // @param orderInfo Information about the order; may be null
-func NewUpdateNewPreCheckoutQuery(iD JSONInt64, senderUserID int32, currency string, totalAmount int64, invoicePayload []byte, shippingOptionID string, orderInfo *OrderInfo) *UpdateNewPreCheckoutQuery {
+func NewUpdateNewPreCheckoutQuery(iD JSONInt64, senderUserID int64, currency string, totalAmount int64, invoicePayload []byte, shippingOptionID string, orderInfo *OrderInfo) *UpdateNewPreCheckoutQuery {
 	updateNewPreCheckoutQueryTemp := UpdateNewPreCheckoutQuery{
 		tdCommon:         tdCommon{Type: "updateNewPreCheckoutQuery"},
 		ID:               iD,
@@ -31266,7 +31266,7 @@ func (updatePoll *UpdatePoll) GetUpdateEnum() UpdateEnum {
 type UpdatePollAnswer struct {
 	tdCommon
 	PollID    JSONInt64 `json:"poll_id"`    // Unique poll identifier
-	UserID    int32     `json:"user_id"`    // The user, who changed the answer to the poll
+	UserID    int64     `json:"user_id"`    // The user, who changed the answer to the poll
 	OptionIDs []int32   `json:"option_ids"` // 0-based identifiers of answer options, chosen by the user
 }
 
