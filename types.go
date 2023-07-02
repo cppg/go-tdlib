@@ -4351,7 +4351,7 @@ func (user *User) MessageType() string {
 // @param haveAccess If false, the user is inaccessible, and the only information known about the user is inside this class. It can't be passed to any method except GetUser
 // @param typeParam Type of the user
 // @param languageCode IETF language tag of the user's language; only available to bots
-func NewUser(iD int32, firstName string, lastName string, username string, phoneNumber string, status UserStatus, profilePhoto *ProfilePhoto, isContact bool, isMutualContact bool, isVerified bool, isSupport bool, restrictionReason string, isScam bool, isFake bool, haveAccess bool, typeParam UserType, languageCode string) *User {
+func NewUser(iD int64, firstName string, lastName string, username string, phoneNumber string, status UserStatus, profilePhoto *ProfilePhoto, isContact bool, isMutualContact bool, isVerified bool, isSupport bool, restrictionReason string, isScam bool, isFake bool, haveAccess bool, typeParam UserType, languageCode string) *User {
 	userTemp := User{
 		tdCommon:          tdCommon{Type: "user"},
 		ID:                iD,
@@ -5430,7 +5430,7 @@ type ChatInviteLinkInfo struct {
 	Title         string         `json:"title"`           // Title of the chat
 	Photo         *ChatPhotoInfo `json:"photo"`           // Chat photo; may be null
 	MemberCount   int32          `json:"member_count"`    // Number of members in the chat
-	MemberUserIDs []int32        `json:"member_user_ids"` // User identifiers of some chat members that may be known to the current user
+	MemberUserIDs []int64        `json:"member_user_ids"` // User identifiers of some chat members that may be known to the current user
 	IsPublic      bool           `json:"is_public"`       // True, if the chat is a public supergroup or channel, i.e. it has a username or it is a location-based supergroup
 }
 
@@ -5479,7 +5479,7 @@ func (chatInviteLinkInfo *ChatInviteLinkInfo) UnmarshalJSON(b []byte) error {
 		Title         string         `json:"title"`           // Title of the chat
 		Photo         *ChatPhotoInfo `json:"photo"`           // Chat photo; may be null
 		MemberCount   int32          `json:"member_count"`    // Number of members in the chat
-		MemberUserIDs []int32        `json:"member_user_ids"` // User identifiers of some chat members that may be known to the current user
+		MemberUserIDs []int64        `json:"member_user_ids"` // User identifiers of some chat members that may be known to the current user
 		IsPublic      bool           `json:"is_public"`       // True, if the chat is a public supergroup or channel, i.e. it has a username or it is a location-based supergroup
 	}{}
 	err = json.Unmarshal(b, &tempObj)
@@ -5524,7 +5524,7 @@ func (basicGroup *BasicGroup) MessageType() string {
 // @param status Status of the current user in the group
 // @param isActive True, if the group is active
 // @param upgradedToSupergroupID Identifier of the supergroup to which this group was upgraded; 0 if none
-func NewBasicGroup(iD int32, memberCount int32, status ChatMemberStatus, isActive bool, upgradedToSupergroupID int64) *BasicGroup {
+func NewBasicGroup(iD int64, memberCount int32, status ChatMemberStatus, isActive bool, upgradedToSupergroupID int64) *BasicGroup {
 	basicGroupTemp := BasicGroup{
 		tdCommon:               tdCommon{Type: "basicGroup"},
 		ID:                     iD,
@@ -7050,7 +7050,7 @@ func (chatFilterInfo *ChatFilterInfo) MessageType() string {
 // @param iD Unique chat filter identifier
 // @param title The title of the filter; 1-12 characters without line feeds
 // @param iconName The icon name for short filter representation. One of "All", "Unread", "Unmuted", "Bots", "Channels", "Groups", "Private", "Custom", "Setup", "Cat", "Crown", "Favorite", "Flower", "Game", "Home", "Love", "Mask", "Party", "Sport", "Study", "Trade", "Travel", "Work"
-func NewChatFilterInfo(iD int32, title string, iconName string) *ChatFilterInfo {
+func NewChatFilterInfo(iD int64, title string, iconName string) *ChatFilterInfo {
 	chatFilterInfoTemp := ChatFilterInfo{
 		tdCommon: tdCommon{Type: "chatFilterInfo"},
 		ID:       iD,
@@ -14738,7 +14738,7 @@ func (messageChatDeleteMember *MessageChatDeleteMember) MessageType() string {
 // NewMessageChatDeleteMember creates a new MessageChatDeleteMember
 //
 // @param userID User identifier of the deleted chat member
-func NewMessageChatDeleteMember(userID int32) *MessageChatDeleteMember {
+func NewMessageChatDeleteMember(userID int64) *MessageChatDeleteMember {
 	messageChatDeleteMemberTemp := MessageChatDeleteMember{
 		tdCommon: tdCommon{Type: "messageChatDeleteMember"},
 		UserID:   userID,
@@ -15639,7 +15639,7 @@ func (textEntityTypeMentionName *TextEntityTypeMentionName) MessageType() string
 // NewTextEntityTypeMentionName creates a new TextEntityTypeMentionName
 //
 // @param userID Identifier of the mentioned user
-func NewTextEntityTypeMentionName(userID int32) *TextEntityTypeMentionName {
+func NewTextEntityTypeMentionName(userID int64) *TextEntityTypeMentionName {
 	textEntityTypeMentionNameTemp := TextEntityTypeMentionName{
 		tdCommon: tdCommon{Type: "textEntityTypeMentionName"},
 		UserID:   userID,
@@ -18476,7 +18476,7 @@ func (groupCallRecentSpeaker *GroupCallRecentSpeaker) MessageType() string {
 //
 // @param userID User identifier
 // @param isSpeaking True, is the user has spoken recently
-func NewGroupCallRecentSpeaker(userID int32, isSpeaking bool) *GroupCallRecentSpeaker {
+func NewGroupCallRecentSpeaker(userID int64, isSpeaking bool) *GroupCallRecentSpeaker {
 	groupCallRecentSpeakerTemp := GroupCallRecentSpeaker{
 		tdCommon:   tdCommon{Type: "groupCallRecentSpeaker"},
 		UserID:     userID,
@@ -18721,7 +18721,7 @@ func (groupCallParticipant *GroupCallParticipant) MessageType() string {
 // @param canUnmuteSelf True, if the participant is muted for all users, but can unmute themself
 // @param volumeLevel Participant's volume level; 1-20000 in hundreds of percents
 // @param order User's order in the group call participant list. The bigger is order, the higher is user in the list. If order is 0, the user must be removed from the participant list
-func NewGroupCallParticipant(userID int32, source int32, isSpeaking bool, canBeMutedForAllUsers bool, canBeUnmutedForAllUsers bool, canBeMutedForCurrentUser bool, canBeUnmutedForCurrentUser bool, isMutedForAllUsers bool, isMutedForCurrentUser bool, canUnmuteSelf bool, volumeLevel int32, order JSONInt64) *GroupCallParticipant {
+func NewGroupCallParticipant(userID int64, source int32, isSpeaking bool, canBeMutedForAllUsers bool, canBeUnmutedForAllUsers bool, canBeMutedForCurrentUser bool, canBeUnmutedForCurrentUser bool, isMutedForAllUsers bool, isMutedForCurrentUser bool, canUnmuteSelf bool, volumeLevel int32, order JSONInt64) *GroupCallParticipant {
 	groupCallParticipantTemp := GroupCallParticipant{
 		tdCommon:                   tdCommon{Type: "groupCallParticipant"},
 		UserID:                     userID,
@@ -18979,7 +18979,7 @@ func (call *Call) MessageType() string {
 // @param isOutgoing True, if the call is outgoing
 // @param isVideo True, if the call is a video call
 // @param state Call state
-func NewCall(iD int32, userID int32, isOutgoing bool, isVideo bool, state CallState) *Call {
+func NewCall(iD int32, userID int64, isOutgoing bool, isVideo bool, state CallState) *Call {
 	callTemp := Call{
 		tdCommon:   tdCommon{Type: "call"},
 		ID:         iD,
@@ -20865,7 +20865,7 @@ func (gameHighScore *GameHighScore) MessageType() string {
 // @param position Position in the high score table
 // @param userID User identifier
 // @param score User score
-func NewGameHighScore(position int32, userID int32, score int32) *GameHighScore {
+func NewGameHighScore(position int32, userID int64, score int32) *GameHighScore {
 	gameHighScoreTemp := GameHighScore{
 		tdCommon: tdCommon{Type: "gameHighScore"},
 		Position: position,
@@ -21106,7 +21106,7 @@ func (chatEventMemberInvited *ChatEventMemberInvited) MessageType() string {
 //
 // @param userID New member user identifier
 // @param status New member status
-func NewChatEventMemberInvited(userID int32, status ChatMemberStatus) *ChatEventMemberInvited {
+func NewChatEventMemberInvited(userID int64, status ChatMemberStatus) *ChatEventMemberInvited {
 	chatEventMemberInvitedTemp := ChatEventMemberInvited{
 		tdCommon: tdCommon{Type: "chatEventMemberInvited"},
 		UserID:   userID,
@@ -21165,7 +21165,7 @@ func (chatEventMemberPromoted *ChatEventMemberPromoted) MessageType() string {
 // @param userID Chat member user identifier
 // @param oldStatus Previous status of the chat member
 // @param newStatus New status of the chat member
-func NewChatEventMemberPromoted(userID int32, oldStatus ChatMemberStatus, newStatus ChatMemberStatus) *ChatEventMemberPromoted {
+func NewChatEventMemberPromoted(userID int64, oldStatus ChatMemberStatus, newStatus ChatMemberStatus) *ChatEventMemberPromoted {
 	chatEventMemberPromotedTemp := ChatEventMemberPromoted{
 		tdCommon:  tdCommon{Type: "chatEventMemberPromoted"},
 		UserID:    userID,
@@ -21228,7 +21228,7 @@ func (chatEventMemberRestricted *ChatEventMemberRestricted) MessageType() string
 // @param userID Chat member user identifier
 // @param oldStatus Previous status of the chat member
 // @param newStatus New status of the chat member
-func NewChatEventMemberRestricted(userID int32, oldStatus ChatMemberStatus, newStatus ChatMemberStatus) *ChatEventMemberRestricted {
+func NewChatEventMemberRestricted(userID int64, oldStatus ChatMemberStatus, newStatus ChatMemberStatus) *ChatEventMemberRestricted {
 	chatEventMemberRestrictedTemp := ChatEventMemberRestricted{
 		tdCommon:  tdCommon{Type: "chatEventMemberRestricted"},
 		UserID:    userID,
@@ -21708,7 +21708,7 @@ func (chatEventVoiceChatParticipantIsMutedToggled *ChatEventVoiceChatParticipant
 //
 // @param userID Identifier of the affected user
 // @param isMuted New value of is_muted
-func NewChatEventVoiceChatParticipantIsMutedToggled(userID int32, isMuted bool) *ChatEventVoiceChatParticipantIsMutedToggled {
+func NewChatEventVoiceChatParticipantIsMutedToggled(userID int64, isMuted bool) *ChatEventVoiceChatParticipantIsMutedToggled {
 	chatEventVoiceChatParticipantIsMutedToggledTemp := ChatEventVoiceChatParticipantIsMutedToggled{
 		tdCommon: tdCommon{Type: "chatEventVoiceChatParticipantIsMutedToggled"},
 		UserID:   userID,
@@ -21771,7 +21771,7 @@ func (chatEvent *ChatEvent) MessageType() string {
 // @param date Point in time (Unix timestamp) when the event happened
 // @param userID Identifier of the user who performed the action that triggered the event
 // @param action Action performed by the user
-func NewChatEvent(iD JSONInt64, date int32, userID int32, action ChatEventAction) *ChatEvent {
+func NewChatEvent(iD JSONInt64, date int32, userID int64, action ChatEventAction) *ChatEvent {
 	chatEventTemp := ChatEvent{
 		tdCommon: tdCommon{Type: "chatEvent"},
 		ID:       iD,
@@ -26795,7 +26795,7 @@ func (tMeURLTypeUser *TMeURLTypeUser) MessageType() string {
 // NewTMeURLTypeUser creates a new TMeURLTypeUser
 //
 // @param userID Identifier of the user
-func NewTMeURLTypeUser(userID int32) *TMeURLTypeUser {
+func NewTMeURLTypeUser(userID int64) *TMeURLTypeUser {
 	tMeURLTypeUserTemp := TMeURLTypeUser{
 		tdCommon: tdCommon{Type: "tMeUrlTypeUser"},
 		UserID:   userID,
@@ -27712,7 +27712,7 @@ func (chatStatisticsAdministratorActionsInfo *ChatStatisticsAdministratorActions
 // @param deletedMessageCount Number of messages deleted by the administrator
 // @param bannedUserCount Number of users banned by the administrator
 // @param restrictedUserCount Number of users restricted by the administrator
-func NewChatStatisticsAdministratorActionsInfo(userID int32, deletedMessageCount int32, bannedUserCount int32, restrictedUserCount int32) *ChatStatisticsAdministratorActionsInfo {
+func NewChatStatisticsAdministratorActionsInfo(userID int64, deletedMessageCount int32, bannedUserCount int32, restrictedUserCount int32) *ChatStatisticsAdministratorActionsInfo {
 	chatStatisticsAdministratorActionsInfoTemp := ChatStatisticsAdministratorActionsInfo{
 		tdCommon:            tdCommon{Type: "chatStatisticsAdministratorActionsInfo"},
 		UserID:              userID,
@@ -27740,7 +27740,7 @@ func (chatStatisticsInviterInfo *ChatStatisticsInviterInfo) MessageType() string
 //
 // @param userID User identifier
 // @param addedMemberCount Number of new members invited by the user
-func NewChatStatisticsInviterInfo(userID int32, addedMemberCount int32) *ChatStatisticsInviterInfo {
+func NewChatStatisticsInviterInfo(userID int64, addedMemberCount int32) *ChatStatisticsInviterInfo {
 	chatStatisticsInviterInfoTemp := ChatStatisticsInviterInfo{
 		tdCommon:         tdCommon{Type: "chatStatisticsInviterInfo"},
 		UserID:           userID,
@@ -29558,7 +29558,7 @@ func (updateUserChatAction *UpdateUserChatAction) MessageType() string {
 // @param messageThreadID If not 0, a message thread identifier in which the action was performed
 // @param userID Identifier of a user performing an action
 // @param action The action description
-func NewUpdateUserChatAction(chatID int64, messageThreadID int64, userID int32, action ChatAction) *UpdateUserChatAction {
+func NewUpdateUserChatAction(chatID int64, messageThreadID int64, userID int64, action ChatAction) *UpdateUserChatAction {
 	updateUserChatActionTemp := UpdateUserChatAction{
 		tdCommon:        tdCommon{Type: "updateUserChatAction"},
 		ChatID:          chatID,
@@ -29621,7 +29621,7 @@ func (updateUserStatus *UpdateUserStatus) MessageType() string {
 //
 // @param userID User identifier
 // @param status New status of the user
-func NewUpdateUserStatus(userID int32, status UserStatus) *UpdateUserStatus {
+func NewUpdateUserStatus(userID int64, status UserStatus) *UpdateUserStatus {
 	updateUserStatusTemp := UpdateUserStatus{
 		tdCommon: tdCommon{Type: "updateUserStatus"},
 		UserID:   userID,
@@ -29790,7 +29790,7 @@ func (updateUserFullInfo *UpdateUserFullInfo) MessageType() string {
 //
 // @param userID User identifier
 // @param userFullInfo New full information about the user
-func NewUpdateUserFullInfo(userID int32, userFullInfo *UserFullInfo) *UpdateUserFullInfo {
+func NewUpdateUserFullInfo(userID int64, userFullInfo *UserFullInfo) *UpdateUserFullInfo {
 	updateUserFullInfoTemp := UpdateUserFullInfo{
 		tdCommon:     tdCommon{Type: "updateUserFullInfo"},
 		UserID:       userID,
@@ -31280,7 +31280,7 @@ func (updatePollAnswer *UpdatePollAnswer) MessageType() string {
 // @param pollID Unique poll identifier
 // @param userID The user, who changed the answer to the poll
 // @param optionIDs 0-based identifiers of answer options, chosen by the user
-func NewUpdatePollAnswer(pollID JSONInt64, userID int32, optionIDs []int32) *UpdatePollAnswer {
+func NewUpdatePollAnswer(pollID JSONInt64, userID int64, optionIDs []int32) *UpdatePollAnswer {
 	updatePollAnswerTemp := UpdatePollAnswer{
 		tdCommon:  tdCommon{Type: "updatePollAnswer"},
 		PollID:    pollID,
