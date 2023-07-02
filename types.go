@@ -4814,7 +4814,7 @@ type ChatMember struct {
 	tdCommon
 	InviterUserID  int64            `json:"inviter_user_id"`  // Identifier of a user that invited/promoted/banned this member in the chat; 0 if unknown
 	JoinedChatDate int64            `json:"joined_chat_date"` // Point in time (Unix timestamp) when the user joined the chat
-	MemberId       *MemberItem      `json:"member_id"`
+	MemberId       MemberItem       `json:"member_id"`
 	Status         ChatMemberStatus `json:"status"`   // Status of the member in the chat
 	BotInfo        *BotInfo         `json:"bot_info"` // If the user is a bot, information about the bot; may be null. Can be null even for a bot if the bot is not the chat member
 }
@@ -4839,7 +4839,7 @@ func (chatMember *ChatMember) MessageType() string {
 func NewChatMember(userID int64, inviterUserID int64, joinedChatDate int64, status ChatMemberStatus, botInfo *BotInfo) *ChatMember {
 	chatMemberTemp := ChatMember{
 		tdCommon:       tdCommon{Type: "chatMember"},
-		MemberId:       &MemberItem{UserId: userID},
+		MemberId:       MemberItem{UserId: userID},
 		InviterUserID:  inviterUserID,
 		JoinedChatDate: joinedChatDate,
 		Status:         status,
@@ -4858,10 +4858,10 @@ func (chatMember *ChatMember) UnmarshalJSON(b []byte) error {
 	}
 	tempObj := struct {
 		tdCommon
-		UserID         int64    `json:"user_id"`          // User identifier of the chat member
-		InviterUserID  int64    `json:"inviter_user_id"`  // Identifier of a user that invited/promoted/banned this member in the chat; 0 if unknown
-		JoinedChatDate int64    `json:"joined_chat_date"` // Point in time (Unix timestamp) when the user joined the chat
-		BotInfo        *BotInfo `json:"bot_info"`         // If the user is a bot, information about the bot; may be null. Can be null even for a bot if the bot is not the chat member
+		MemberId       MemberItem `json:"member_id"`        // User identifier of the chat member
+		InviterUserID  int64      `json:"inviter_user_id"`  // Identifier of a user that invited/promoted/banned this member in the chat; 0 if unknown
+		JoinedChatDate int64      `json:"joined_chat_date"` // Point in time (Unix timestamp) when the user joined the chat
+		BotInfo        *BotInfo   `json:"bot_info"`         // If the user is a bot, information about the bot; may be null. Can be null even for a bot if the bot is not the chat member
 	}{}
 	err = json.Unmarshal(b, &tempObj)
 	if err != nil {
@@ -4869,7 +4869,7 @@ func (chatMember *ChatMember) UnmarshalJSON(b []byte) error {
 	}
 
 	chatMember.tdCommon = tempObj.tdCommon
-	chatMember.MemberId = &MemberItem{UserId: tempObj.UserID}
+	chatMember.MemberId = tempObj.MemberId
 	chatMember.InviterUserID = tempObj.InviterUserID
 	chatMember.JoinedChatDate = tempObj.JoinedChatDate
 	chatMember.BotInfo = tempObj.BotInfo
